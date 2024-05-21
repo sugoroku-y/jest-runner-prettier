@@ -1,0 +1,6 @@
+{
+  "editor.formatOnSave": true,
+  "jestrunner.debugOptions": {
+    "runtimeArgs": ["--experimental-vm-modules"]
+  }
+}

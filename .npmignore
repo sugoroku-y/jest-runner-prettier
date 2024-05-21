@@ -1,0 +1,16 @@
+/.vscode/
+/src/
+/tests/
+/.eslint*
+/.prettier*
+/jest.*
+
+/dist/*.map
+/coverage/
+*.tgz
+*.zip
+
+tsconfig*.json
+
+jest*.config.mjs
+resolver.cjs
