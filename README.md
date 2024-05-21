@@ -11,7 +11,7 @@ an alternative `Prettier runner for Jest` besides [jest-runner-prettier](https:/
 JESTとPRETTIERがインストールされた環境に`@sugoroku-y/jest-runner-prettier`をインストールします。
 
 ```command
-npm i -D sugoroku-y/jest-runner-prettier#release/v0.0.0
+npm i -D sugoroku-y/jest-runner-prettier#release/v0.0.1
 ```
 
 ### Add to Jest config(Jestの設定に追加)
