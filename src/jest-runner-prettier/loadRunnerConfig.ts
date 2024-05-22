@@ -7,6 +7,7 @@ export interface RunnerConfig {
   diff: {
     expand: boolean;
     contextLines: number;
+    thresholdForOmitting: number | 'Infinity';
   };
 }
 
@@ -15,6 +16,7 @@ const DEFAULT_CONFIG: RunnerConfig = {
   diff: {
     expand: false,
     contextLines: 2,
+    thresholdForOmitting: 20,
   },
 };
 

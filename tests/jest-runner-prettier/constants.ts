@@ -2,7 +2,7 @@ import { resolve } from 'path';
 
 export const DEFAULT_CONFIG = {
   ignorePath: ['.gitignore', '.prettierignore'],
-  diff: { expand: false, contextLines: 2 },
+  diff: { expand: false, contextLines: 2, thresholdForOmitting: 20 },
 };
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- ここではNullishにならない
 const SCRIPT_PATH = expect.getState().testPath!;

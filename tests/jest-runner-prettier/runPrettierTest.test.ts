@@ -35,17 +35,36 @@ describe('runPrettierTest', () => {
     expect(result.numTodoTests).toBe(0);
     expect(result.failureMessage).toEqual(
       expect.failureMessage`
-      - Expected
-      + Received
-
-      @@ -2,5 +2,5 @@
-            "abc": 123,
-            "def": 234,
-      -     "ghi": 345
-      +   "ghi": 345
-        }
-
-      `,
+        ${FAILURE_JSON}:4
+               2 |        "abc": 123,
+               3 |        "def": 234,
+               4 | -      "ghi": 345
+               4 | +    "ghi": 345
+               5 |    }
+               6 |    
+        `,
+    );
+  });
+  test('failure.json expand', async () => {
+    const result = await runPrettierTest(FAILURE_JSON, FAILURE_DIR, {
+      ...DEFAULT_CONFIG,
+      diff: { expand: true, contextLines: 2, thresholdForOmitting: 20 },
+    });
+    expect(result.numPassingTests).toBe(0);
+    expect(result.numFailingTests).toBe(1);
+    expect(result.numPendingTests).toBe(0);
+    expect(result.numTodoTests).toBe(0);
+    expect(result.failureMessage).toEqual(
+      expect.failureMessage`
+        ${FAILURE_JSON}
+               1 |    {
+               2 |        "abc": 123,
+               3 |        "def": 234,
+               4 | -      "ghi": 345
+               4 | +    "ghi": 345
+               5 |    }
+               6 |    
+        `,
     );
   });
   test('empty config file', async () => {
@@ -69,17 +88,14 @@ describe('runPrettierTest', () => {
       expect(result.numTodoTests).toBe(0);
       expect(result.failureMessage).toEqual(
         expect.failureMessage`
-          - Expected
-          + Received
-
-          @@ -1,5 +1,5 @@
-            {
-          -   "abc": 123,
-          -   "def": 234,
-          +     "abc": 123,
-          +     "def": 234,
-              "ghi": 345
-            }
+          ${FAILURE_JSON}:2
+                 1 |    {
+                 2 | -    "abc": 123,
+                 2 | -    "def": 234,
+                 2 | +      "abc": 123,
+                 3 | +      "def": 234,
+                 4 |      "ghi": 345
+                 5 |    }
           `,
       );
     } finally {
@@ -97,7 +113,125 @@ describe('runPrettierTest', () => {
     expect(result.numPendingTests).toBe(0);
     expect(result.numTodoTests).toBe(0);
     expect(result.failureMessage).toEqual(
-      expect.failureMessage`Too many differences for omission.`,
+      expect.failureMessage`
+        ${SAMPLE_TS}:1
+               1 | -  import * as fs from \"node:fs/promises\";
+               1 | -  
+               1 | -  (async () => {
+               1 | -      const text = await fs.readFile(\"sample.json\", \"utf8\");
+               1 | -      const json = JSON.parse(text) as Record<string, unknown>;
+               1 | -      for (const [key, value] of Object.entries(json)) {
+               1 | -          console.log(key, value);
+               1 | -      }
+               1 | -      console.log(${'`'}
+               1 | -      '${'$'}{\"a\"}'
+               1 | -      '${'$'}{\"b\"}'
+               1 | -      '${'$'}{\"c\"}'
+               1 | -      '${'$'}{\"d\"}'
+               1 | -      '${'$'}{\"e\"}'
+               1 | -      '${'$'}{\"f\"}'
+               1 | -      '${'$'}{\"g\"}'
+               1 | -      '${'$'}{\"h\"}'
+               1 | -      '${'$'}{\"i\"}'
+               1 | -      '${'$'}{\"j\"}'
+        ...Too many differences for omission.
+        `,
+    );
+  });
+  test('sample.ts threshold infinity', async () => {
+    const result = await runPrettierTest(
+      SAMPLE_TS,
+      PROJECT_DIR,
+      {
+        ...DEFAULT_CONFIG,
+        diff: {
+          ...DEFAULT_CONFIG.diff,
+          thresholdForOmitting: 'Infinity',
+        }
+      },
+    );
+    expect(result.numPassingTests).toBe(0);
+    expect(result.numFailingTests).toBe(1);
+    expect(result.numPendingTests).toBe(0);
+    expect(result.numTodoTests).toBe(0);
+    expect(result.failureMessage).toEqual(
+      expect.failureMessage`
+        ${SAMPLE_TS}:1
+               1 | -  import * as fs from \"node:fs/promises\";
+               1 | -  
+               1 | -  (async () => {
+               1 | -      const text = await fs.readFile(\"sample.json\", \"utf8\");
+               1 | -      const json = JSON.parse(text) as Record<string, unknown>;
+               1 | -      for (const [key, value] of Object.entries(json)) {
+               1 | -          console.log(key, value);
+               1 | -      }
+               1 | -      console.log(${'`'}
+               1 | -      '${'$'}{\"a\"}'
+               1 | -      '${'$'}{\"b\"}'
+               1 | -      '${'$'}{\"c\"}'
+               1 | -      '${'$'}{\"d\"}'
+               1 | -      '${'$'}{\"e\"}'
+               1 | -      '${'$'}{\"f\"}'
+               1 | -      '${'$'}{\"g\"}'
+               1 | -      '${'$'}{\"h\"}'
+               1 | -      '${'$'}{\"i\"}'
+               1 | -      '${'$'}{\"j\"}'
+               1 | -      '${'$'}{\"k\"}'
+               1 | -      '${'$'}{\"l\"}'
+               1 | -      '${'$'}{\"m\"}'
+               1 | -      '${'$'}{\"n\"}'
+               1 | -      '${'$'}{\"o\"}'
+               1 | -      '${'$'}{\"p\"}'
+               1 | -      '${'$'}{\"q\"}'
+               1 | -      '${'$'}{\"r\"}'
+               1 | -      '${'$'}{\"s\"}'
+               1 | -      '${'$'}{\"t\"}'
+               1 | -      '${'$'}{\"u\"}'
+               1 | -      '${'$'}{\"v\"}'
+               1 | -      '${'$'}{\"w\"}'
+               1 | -      '${'$'}{\"x\"}'
+               1 | -      '${'$'}{\"y\"}'
+               1 | -      '${'$'}{\"z\"}'
+               1 | -      ${'`'});
+               1 | +  import * as fs from 'node:fs/promises';
+               2 | +  
+               3 | +  (async () => {
+               4 | +      const text = await fs.readFile('sample.json', 'utf8');
+               5 | +      const json = JSON.parse(text) as Record<string, unknown>;
+               6 | +      for (const [key, value] of Object.entries(json)) {
+               7 | +          console.log(key, value);
+               8 | +      }
+               9 | +      console.log(${'`'}
+              10 | +      '${'$'}{'a'}'
+              11 | +      '${'$'}{'b'}'
+              12 | +      '${'$'}{'c'}'
+              13 | +      '${'$'}{'d'}'
+              14 | +      '${'$'}{'e'}'
+              15 | +      '${'$'}{'f'}'
+              16 | +      '${'$'}{'g'}'
+              17 | +      '${'$'}{'h'}'
+              18 | +      '${'$'}{'i'}'
+              19 | +      '${'$'}{'j'}'
+              20 | +      '${'$'}{'k'}'
+              21 | +      '${'$'}{'l'}'
+              22 | +      '${'$'}{'m'}'
+              23 | +      '${'$'}{'n'}'
+              24 | +      '${'$'}{'o'}'
+              25 | +      '${'$'}{'p'}'
+              26 | +      '${'$'}{'q'}'
+              27 | +      '${'$'}{'r'}'
+              28 | +      '${'$'}{'s'}'
+              29 | +      '${'$'}{'t'}'
+              30 | +      '${'$'}{'u'}'
+              31 | +      '${'$'}{'v'}'
+              32 | +      '${'$'}{'w'}'
+              33 | +      '${'$'}{'x'}'
+              34 | +      '${'$'}{'y'}'
+              35 | +      '${'$'}{'z'}'
+              36 | +      ${'`'})
+              37 |    })();
+              38 | -  
+        `,
     );
   });
 });

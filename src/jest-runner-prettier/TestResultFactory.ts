@@ -39,10 +39,7 @@ export class TestResultFactory {
     return this.common();
   }
   fail(errorMessage: string) {
-    this.result.failureMessage =
-      errorMessage.split(/\r\n?|\n|\u2028\u2029/).length < 50
-        ? errorMessage
-        : `Too many differences for omission.`;
+    this.result.failureMessage = errorMessage;
     this.result.numFailingTests = 1;
     this.addTestResult({
       failureMessages: [errorMessage],

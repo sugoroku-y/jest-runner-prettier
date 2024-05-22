@@ -15,6 +15,7 @@ describe('loadRunnerConfig', () => {
       diff: {
         expand: true,
         contextLines: 2,
+        thresholdForOmitting: 20,
       },
     });
   });
@@ -25,6 +26,7 @@ describe('loadRunnerConfig', () => {
       diff: {
         expand: false,
         contextLines: 2,
+        thresholdForOmitting: 20,
       },
     });
   });
@@ -35,6 +37,7 @@ describe('loadRunnerConfig', () => {
       diff: {
         expand: false,
         contextLines: 2,
+        thresholdForOmitting: 20,
       },
     });
   });
@@ -46,6 +49,7 @@ describe('loadRunnerConfig', () => {
       diff: {
         expand: false,
         contextLines: 2,
+        thresholdForOmitting: 20,
       },
     });
   });
