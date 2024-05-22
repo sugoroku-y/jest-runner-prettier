@@ -15,5 +15,5 @@ export default {
   get moduleFileExtensions() {
     return moduleFileExtensions;
   },
-  testMatch: ['<rootDir>**/*'],
+  testMatch: ['<rootDir>/**'],
 };
