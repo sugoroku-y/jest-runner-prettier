@@ -1,6 +1,6 @@
 import { CallbackTestRunner } from 'jest-runner';
-import pLimit from 'p-limit';
 import { getFileInfo } from 'prettier';
+import { pLimit } from '../utils/p-limit.js';
 import { loadRunnerConfig } from './loadRunnerConfig.js';
 import { runPrettierTest } from './runPrettierTest.js';
 

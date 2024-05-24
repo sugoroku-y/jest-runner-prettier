@@ -4,10 +4,10 @@ import JestRunnerPrettier from '../../src';
 import { PROJECT_DIR, SAMPLE_TS, SUCCESS_JSON } from './constants';
 
 describe('JestRunnerPrettier', () => {
-  test('run', async () => {
+  test.each([1, 2])('run', async (maxWorkers) => {
     process.chdir(PROJECT_DIR);
     const runner = new JestRunnerPrettier(
-      { rootDir: PROJECT_DIR, maxWorkers: 2 } as Config.GlobalConfig,
+      { rootDir: PROJECT_DIR, maxWorkers } as Config.GlobalConfig,
       {},
     );
     const onStart = jest
