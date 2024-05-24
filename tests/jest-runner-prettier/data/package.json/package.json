@@ -1,6 +1,8 @@
 {
     "jest-runner-prettier": {
         "config": ".example",
-        "ignorePath": [".gitignore"]
+        "ignorePath": [
+            ".gitignore"
+        ]
     }
 }

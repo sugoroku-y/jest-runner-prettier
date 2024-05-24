@@ -35,13 +35,25 @@ describe('runPrettierTest', () => {
     expect(result.numTodoTests).toBe(0);
     expect(result.failureMessage).toEqual(
       expect.failureMessage`
-        ${FAILURE_JSON}:4
+        ${FAILURE_JSON}:4:3
                2 |        "abc": 123,
                3 |        "def": 234,
-               4 | -      "ghi": 345
-               4 | +    "ghi": 345
-               5 |    }
-               6 |    
+         4-      | !!   "ghi": 345,
+             -10 | !!   "jkl": 456,
+                 | !!   "mno": 567,
+                 | !!   "pqr": 678,
+                 | !!   "stu": 789,
+                 | !!   "vwx": 890,
+                 | !!   "yz": 901
+                 | =>     "ghi": 345,
+                 | =>     "jkl": 456,
+                 | =>     "mno": 567,
+                 | =>     "pqr": 678,
+                 | =>     "stu": 789,
+                 | =>     "vwx": 890,
+                 | =>     "yz": 901
+              11 |    }
+              12 | => 
         `,
     );
   });
@@ -60,10 +72,22 @@ describe('runPrettierTest', () => {
                1 |    {
                2 |        "abc": 123,
                3 |        "def": 234,
-               4 | -      "ghi": 345
-               4 | +    "ghi": 345
-               5 |    }
-               6 |    
+         4-      | !!   "ghi": 345,
+             -10 | !!   "jkl": 456,
+                 | !!   "mno": 567,
+                 | !!   "pqr": 678,
+                 | !!   "stu": 789,
+                 | !!   "vwx": 890,
+                 | !!   "yz": 901
+                 | =>     "ghi": 345,
+                 | =>     "jkl": 456,
+                 | =>     "mno": 567,
+                 | =>     "pqr": 678,
+                 | =>     "stu": 789,
+                 | =>     "vwx": 890,
+                 | =>     "yz": 901
+              11 |    }
+              12 | => 
         `,
     );
   });
@@ -88,14 +112,18 @@ describe('runPrettierTest', () => {
       expect(result.numTodoTests).toBe(0);
       expect(result.failureMessage).toEqual(
         expect.failureMessage`
-          ${FAILURE_JSON}:2
+          ${FAILURE_JSON}:2:3
                  1 |    {
-                 2 | -    "abc": 123,
-                 2 | -    "def": 234,
-                 2 | +      "abc": 123,
-                 3 | +      "def": 234,
-                 4 |      "ghi": 345
-                 5 |    }
+           2-      | !!     "abc": 123,
+                -3 | !!     "def": 234,
+                   | =>   "abc": 123,
+                   | =>   "def": 234,
+                 4 |      "ghi": 345,
+                 5 |      "jkl": 456,
+          ${FAILURE_JSON}:12:1
+                10 |      "yz": 901
+                11 |    }
+                12 | => 
           `,
       );
     } finally {
@@ -114,123 +142,119 @@ describe('runPrettierTest', () => {
     expect(result.numTodoTests).toBe(0);
     expect(result.failureMessage).toEqual(
       expect.failureMessage`
-        ${SAMPLE_TS}:1
-               1 | -  import * as fs from \"node:fs/promises\";
-               1 | -  
-               1 | -  (async () => {
-               1 | -      const text = await fs.readFile(\"sample.json\", \"utf8\");
-               1 | -      const json = JSON.parse(text) as Record<string, unknown>;
-               1 | -      for (const [key, value] of Object.entries(json)) {
-               1 | -          console.log(key, value);
-               1 | -      }
-               1 | -      console.log(${'`'}
-               1 | -      '${'$'}{\"a\"}'
-               1 | -      '${'$'}{\"b\"}'
-               1 | -      '${'$'}{\"c\"}'
-               1 | -      '${'$'}{\"d\"}'
-               1 | -      '${'$'}{\"e\"}'
-               1 | -      '${'$'}{\"f\"}'
-               1 | -      '${'$'}{\"g\"}'
-               1 | -      '${'$'}{\"h\"}'
-               1 | -      '${'$'}{\"i\"}'
-               1 | -      '${'$'}{\"j\"}'
-        ...Too many differences for omission.
+        ${SAMPLE_TS}:1:40
+         1-      | !! import * as fs from 'node:fs/promises';
+             -36 | !! 
+                 | !! (async () => {
+                 | !!     const text = await fs.readFile('sample.json', 'utf8');
+                 | !!     const json = JSON.parse(text) as Record<string, unknown>;
+                 | !!     for (const [key, value] of Object.entries(json)) {
+                 | !!         console.log(key, value);
+                 | !!     }
+                 | !!     console.log(${'`'}
+                 | !!     '${'$'}{'a'}'
+                 | !!     '${'$'}{'b'}'
+                 | !!     '${'$'}{'c'}'
+                 | !!     '${'$'}{'d'}'
+                 | !!     '${'$'}{'e'}'
+                 | !!     '${'$'}{'f'}'
+                 | !!     '${'$'}{'g'}'
+                 | !!     '${'$'}{'h'}'
+                 | !!     '${'$'}{'i'}'
+                 | !!     '${'$'}{'j'}'
+        ...Too many modifications to show all.
         `,
     );
   });
   test('sample.ts threshold infinity', async () => {
-    const result = await runPrettierTest(
-      SAMPLE_TS,
-      PROJECT_DIR,
-      {
-        ...DEFAULT_CONFIG,
-        diff: {
-          ...DEFAULT_CONFIG.diff,
-          thresholdForOmitting: 'Infinity',
-        }
+    const result = await runPrettierTest(SAMPLE_TS, PROJECT_DIR, {
+      ...DEFAULT_CONFIG,
+      diff: {
+        ...DEFAULT_CONFIG.diff,
+        thresholdForOmitting: 'Infinity',
       },
-    );
+    });
     expect(result.numPassingTests).toBe(0);
     expect(result.numFailingTests).toBe(1);
     expect(result.numPendingTests).toBe(0);
     expect(result.numTodoTests).toBe(0);
     expect(result.failureMessage).toEqual(
       expect.failureMessage`
-        ${SAMPLE_TS}:1
-               1 | -  import * as fs from \"node:fs/promises\";
-               1 | -  
-               1 | -  (async () => {
-               1 | -      const text = await fs.readFile(\"sample.json\", \"utf8\");
-               1 | -      const json = JSON.parse(text) as Record<string, unknown>;
-               1 | -      for (const [key, value] of Object.entries(json)) {
-               1 | -          console.log(key, value);
-               1 | -      }
-               1 | -      console.log(${'`'}
-               1 | -      '${'$'}{\"a\"}'
-               1 | -      '${'$'}{\"b\"}'
-               1 | -      '${'$'}{\"c\"}'
-               1 | -      '${'$'}{\"d\"}'
-               1 | -      '${'$'}{\"e\"}'
-               1 | -      '${'$'}{\"f\"}'
-               1 | -      '${'$'}{\"g\"}'
-               1 | -      '${'$'}{\"h\"}'
-               1 | -      '${'$'}{\"i\"}'
-               1 | -      '${'$'}{\"j\"}'
-               1 | -      '${'$'}{\"k\"}'
-               1 | -      '${'$'}{\"l\"}'
-               1 | -      '${'$'}{\"m\"}'
-               1 | -      '${'$'}{\"n\"}'
-               1 | -      '${'$'}{\"o\"}'
-               1 | -      '${'$'}{\"p\"}'
-               1 | -      '${'$'}{\"q\"}'
-               1 | -      '${'$'}{\"r\"}'
-               1 | -      '${'$'}{\"s\"}'
-               1 | -      '${'$'}{\"t\"}'
-               1 | -      '${'$'}{\"u\"}'
-               1 | -      '${'$'}{\"v\"}'
-               1 | -      '${'$'}{\"w\"}'
-               1 | -      '${'$'}{\"x\"}'
-               1 | -      '${'$'}{\"y\"}'
-               1 | -      '${'$'}{\"z\"}'
-               1 | -      ${'`'});
-               1 | +  import * as fs from 'node:fs/promises';
-               2 | +  
-               3 | +  (async () => {
-               4 | +      const text = await fs.readFile('sample.json', 'utf8');
-               5 | +      const json = JSON.parse(text) as Record<string, unknown>;
-               6 | +      for (const [key, value] of Object.entries(json)) {
-               7 | +          console.log(key, value);
-               8 | +      }
-               9 | +      console.log(${'`'}
-              10 | +      '${'$'}{'a'}'
-              11 | +      '${'$'}{'b'}'
-              12 | +      '${'$'}{'c'}'
-              13 | +      '${'$'}{'d'}'
-              14 | +      '${'$'}{'e'}'
-              15 | +      '${'$'}{'f'}'
-              16 | +      '${'$'}{'g'}'
-              17 | +      '${'$'}{'h'}'
-              18 | +      '${'$'}{'i'}'
-              19 | +      '${'$'}{'j'}'
-              20 | +      '${'$'}{'k'}'
-              21 | +      '${'$'}{'l'}'
-              22 | +      '${'$'}{'m'}'
-              23 | +      '${'$'}{'n'}'
-              24 | +      '${'$'}{'o'}'
-              25 | +      '${'$'}{'p'}'
-              26 | +      '${'$'}{'q'}'
-              27 | +      '${'$'}{'r'}'
-              28 | +      '${'$'}{'s'}'
-              29 | +      '${'$'}{'t'}'
-              30 | +      '${'$'}{'u'}'
-              31 | +      '${'$'}{'v'}'
-              32 | +      '${'$'}{'w'}'
-              33 | +      '${'$'}{'x'}'
-              34 | +      '${'$'}{'y'}'
-              35 | +      '${'$'}{'z'}'
-              36 | +      ${'`'})
+        ${SAMPLE_TS}:1:40
+         1-      | !! import * as fs from 'node:fs/promises';
+             -36 | !! 
+                 | !! (async () => {
+                 | !!     const text = await fs.readFile('sample.json', 'utf8');
+                 | !!     const json = JSON.parse(text) as Record<string, unknown>;
+                 | !!     for (const [key, value] of Object.entries(json)) {
+                 | !!         console.log(key, value);
+                 | !!     }
+                 | !!     console.log(${'`'}
+                 | !!     '${'$'}{'a'}'
+                 | !!     '${'$'}{'b'}'
+                 | !!     '${'$'}{'c'}'
+                 | !!     '${'$'}{'d'}'
+                 | !!     '${'$'}{'e'}'
+                 | !!     '${'$'}{'f'}'
+                 | !!     '${'$'}{'g'}'
+                 | !!     '${'$'}{'h'}'
+                 | !!     '${'$'}{'i'}'
+                 | !!     '${'$'}{'j'}'
+                 | !!     '${'$'}{'k'}'
+                 | !!     '${'$'}{'l'}'
+                 | !!     '${'$'}{'m'}'
+                 | !!     '${'$'}{'n'}'
+                 | !!     '${'$'}{'o'}'
+                 | !!     '${'$'}{'p'}'
+                 | !!     '${'$'}{'q'}'
+                 | !!     '${'$'}{'r'}'
+                 | !!     '${'$'}{'s'}'
+                 | !!     '${'$'}{'t'}'
+                 | !!     '${'$'}{'u'}'
+                 | !!     '${'$'}{'v'}'
+                 | !!     '${'$'}{'w'}'
+                 | !!     '${'$'}{'x'}'
+                 | !!     '${'$'}{'y'}'
+                 | !!     '${'$'}{'z'}'
+                 | !!     ${'`'})
+                 | => import * as fs from 'node:fs/promises';
+                 | => 
+                 | => (async () => {
+                 | =>     const text = await fs.readFile('sample.json', 'utf8');
+                 | =>     const json = JSON.parse(text) as Record<string, unknown>;
+                 | =>     for (const [key, value] of Object.entries(json)) {
+                 | =>         console.log(key, value);
+                 | =>     }
+                 | =>     console.log(${'`'}
+                 | =>     '${'$'}{'a'}'
+                 | =>     '${'$'}{'b'}'
+                 | =>     '${'$'}{'c'}'
+                 | =>     '${'$'}{'d'}'
+                 | =>     '${'$'}{'e'}'
+                 | =>     '${'$'}{'f'}'
+                 | =>     '${'$'}{'g'}'
+                 | =>     '${'$'}{'h'}'
+                 | =>     '${'$'}{'i'}'
+                 | =>     '${'$'}{'j'}'
+                 | =>     '${'$'}{'k'}'
+                 | =>     '${'$'}{'l'}'
+                 | =>     '${'$'}{'m'}'
+                 | =>     '${'$'}{'n'}'
+                 | =>     '${'$'}{'o'}'
+                 | =>     '${'$'}{'p'}'
+                 | =>     '${'$'}{'q'}'
+                 | =>     '${'$'}{'r'}'
+                 | =>     '${'$'}{'s'}'
+                 | =>     '${'$'}{'t'}'
+                 | =>     '${'$'}{'u'}'
+                 | =>     '${'$'}{'v'}'
+                 | =>     '${'$'}{'w'}'
+                 | =>     '${'$'}{'x'}'
+                 | =>     '${'$'}{'y'}'
+                 | =>     '${'$'}{'z'}'
+                 | =>     ${'`'});
               37 |    })();
-              38 | -  
+              38 | => 
         `,
     );
   });
@@ -261,6 +285,11 @@ expect.extend({
         '',
       )
       .replace(/\r\n|[\r\n\u2028\u2029]/g, '\n');
+    if (expected !== actual) {
+      console.error(
+        this.utils.diff(expected, actual, { expand: false, contextLines: 2 }),
+      );
+    }
     return {
       pass: expected === actual,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- asymmetric matcherではmessageを使用しない
