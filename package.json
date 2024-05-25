@@ -6,10 +6,10 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "prebuild": "npm test",
     "build": "tsc",
-    "preversion": "npm run build",
-    "postversion": "node tools/update-version.cjs"
+    "preversioncheck": "npm run build",
+    "versioncheck": "node tools/versioncheck.cjs",
+    "preversion": "npm run versioncheck"
   },
   "keywords": [],
   "author": {
