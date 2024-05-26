@@ -6,6 +6,9 @@ type Generator = <P extends unknown[], R>(
 // 空いている枠を検索するための関数
 const vacancy = <T>(e: T) => !e;
 
+// エラーを握りつぶす関数
+const grasp = () => {};
+
 export function pLimit(maxWorkers: number): Generator {
   // 指定された数だけ枠を用意しておく
   const tasks = Array<Promise<unknown> | undefined>(maxWorkers);
@@ -15,7 +18,7 @@ export function pLimit(maxWorkers: number): Generator {
       // どれか1つでも完了/エラーで終了するまで待つ
       .race(tasks)
       // エラーで終了の場合でも握りつぶす
-      .catch(() => 0);
+      .catch(grasp);
   // 一つ前のタスクでの検索
   let racing: Promise<unknown> = Promise.resolve();
   return async (task, ...args) => {
