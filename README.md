@@ -120,6 +120,106 @@ Then prepare `.prettierrc`, `.prettierignore`, etc. as required.
 
 > あとは必要に応じて`.prettierrc`や`.prettierignore`などを用意してください。
 
+## Customizable Features(カスタマイズ項目)
+
+You can customize the behavior and display of Prettier by placing the following file named `jest-runner-prettier.config.js` in the root of your project.
+
+> プロジェクトのルートに`jest-runner-prettier.config.js`というファイル名で以下の内容を置いておくことで、実行するPrettierの挙動や表示内容をカスタマイズできます。
+
+```js
+export default {
+    config: '.example',
+    ignorePath: '.prettier-ignore',
+    diff: {
+        expand: true,
+        contextLines: 4,
+        thresholdForOmitting: 50,
+    },
+};
+```
+
+The contents of each configuration item are as follows:
+
+> 各設定項目の内容は以下のとおりです。
+
+- `config`.
+
+  Specifies the file name of the `.prettierrc` configuration file.
+
+  Specify a string.
+
+  If omitted, the behavior is the same as if you did not specify a configuration file name in Prettier.
+
+  > Prettierの設定ファイル`.prettierrc`のファイル名を指定します。
+  >
+  > 文字列を指定します。
+  >
+  > 省略した場合はPrettierで設定ファイル名を指定しなかったときと同じ挙動になります。
+
+- `ignorePath`.
+
+  The name of a file that specifies a file that is not covered by Prettier.
+
+  Specify a string or an array of strings.
+
+  If omitted, `['.gitignore', '.prettierignore']` is assumed to be specified.
+
+  > Prettierの対象外ファイルを指定するファイル名です。
+  >
+  > 文字列、もしくは文字列の配列を指定します。
+  >
+  > 省略した場合は`['.gitignore', '.prettierignore']`が指定されたものと見なします。
+
+- `diff.expand`.
+
+  Specifies whether or not to expand lines with no differences when displaying the contents of unformatted files.
+
+  Specify `true` or `false`.
+
+  If omitted, `false` (do not expand non-diff lines) is assumed.
+
+  > フォーマットされていないファイルの内容を表示する際に、差分のない行も展開して表示するかどうかを指定します。
+  >
+  > `true`または`false`を指定します。
+  >
+  > 省略した場合は`false`(差分のない行は展開しない)が指定されたものと見なします。
+
+- `diff.contextLines`.
+
+  Specifies how many lines before and after the diff line to display when the contents of an unformatted file are not expanded.
+
+  Specified as an integer number.
+
+  If omitted, `2` is assumed.
+
+  > フォーマットされていないファイルの内容を展開しないで表示する際に、差分のある行の前後を何行表示するかを指定します。
+  >
+  > 整数値で指定します。
+  >
+  > 省略した場合は`2`が指定されたものと見なします。
+
+- `diff.thresholdForOmitting`.
+
+  Specifies the number of lines to omit when displaying the contents of an unformatted file if there are too many lines to display.
+
+  Specified as an integer number.
+
+  If omitted, `20` is assumed to be specified.
+
+  > フォーマットされていないファイルの内容を表示する際に、表示する行数が多すぎた場合に省略する行数を指定します。
+  >
+  > 整数値で指定します。
+  >
+  > 省略した場合は`20`が指定されたものと見なします。
+
+If the file does not exist, all of the above are assumed to be omitted.
+
+> ファイルが存在していない場合は上記すべてが省略されたものと見なします。
+
+The configuration file is loaded using [cosmiconfig](https://github.com/cosmiconfig/cosmiconfig), so it can be read not only from `jest-runner-prettier.config.js`, but also from the `package.json` property, or by reading from rc files, rc files with `.json` or other extensions.
+
+> 設定ファイルの読み込みには[cosmiconfig](https://github.com/cosmiconfig/cosmiconfig)を利用しているので`jest-runner-prettier.config.js`からの読み込むだけでなく、`package.json`のプロパティで指定したり、rcファイル、rcファイルに`.json`などの拡張子を付けたファイルから読み込む、など各種の設定方法が利用できます。
+
 ## License(使用許諾)
 
 Copyright YEBISUYA Sugoroku 2024. Licensed MIT.
