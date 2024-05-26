@@ -1,6 +1,6 @@
 const cp = require('child_process');
 
-const result = cp.spawnSync('git', ['status', '-s'], {encoding: 'utf8'});
+const result = cp.spawnSync('git', ['status', '-s'], { encoding: 'utf8' });
 if (result.error) {
   console.error(result.error);
   process.exit(1);
