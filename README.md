@@ -30,6 +30,8 @@ The differences from [jest-runner-prettier](https://github.com/keplersj/jest-run
 
   > Prettierによってフォーマットされていないファイルがあれば、差分を表示します。
 
+  ![example](images/example.png)
+
 - Some items can be customized according to the settings described in `jest-runner-prettier.config.js`.
 
   > `jest-runner-prettier.config.js`に記述した設定内容によってカスタマイズできる項目があります。
