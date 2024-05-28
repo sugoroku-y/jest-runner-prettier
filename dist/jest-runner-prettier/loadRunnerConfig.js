@@ -2,6 +2,7 @@ import { cosmiconfig } from 'cosmiconfig';
 import { ensureConfig } from '../utils/ensureConfig.js';
 const DEFAULT_CONFIG = {
     ignorePath: ['.gitignore', '.prettierignore'],
+    editorconfig: true,
     diff: {
         expand: false,
         contextLines: 2,

@@ -6,10 +6,14 @@ import { optional } from '../utils/optional.js';
 import { safeAccess } from '../utils/safeAccess.js';
 import { TestResultFactory } from './TestResultFactory.js';
 export async function runPrettierTest(testPath, rootDir, runnerConfig) {
-    const { config, diff: { thresholdForOmitting }, } = runnerConfig;
+    const { config, useCache, editorconfig, diff: { thresholdForOmitting }, } = runnerConfig;
     const threshold = typeof thresholdForOmitting === 'number' ? thresholdForOmitting : Infinity;
     const contents = await readFile(testPath, 'utf8');
-    const prettierConfig = (await resolveConfig(testPath, { config })) ?? {};
+    const prettierConfig = 
+    // nullが指定されていたときは検索しないで標準設定
+    (config !== null &&
+        (await resolveConfig(testPath, { config, useCache, editorconfig }))) ||
+        {};
     prettierConfig.filepath = testPath;
     const factory = new TestResultFactory(testPath, rootDir);
     const isPretty = await check(contents, prettierConfig);
