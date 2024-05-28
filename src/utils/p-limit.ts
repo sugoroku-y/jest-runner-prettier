@@ -1,44 +1,38 @@
 type Generator = <P extends unknown[], R>(
-  task: (...args: P) => Promise<R>,
+  task: (...args: P) => PromiseLike<R>,
   ...args: P
 ) => Promise<R>;
 
-// 空いている枠を検索するための関数
-const vacancy = <T>(e: T) => !e;
-
 // エラーを握りつぶす関数
-const grasp = () => {};
+const squash = () => {};
+
+// インデックスを返す関数
+function resultIndex(index: number) {
+  return () => index;
+}
+
+// 枠を用意する関数
+function makeSlots(max: number) {
+  return Array.from({ length: max }, (_, i) => Promise.resolve(i));
+}
 
 export function pLimit(maxWorkers: number): Generator {
   // 指定された数だけ枠を用意しておく
-  const tasks = Array<Promise<unknown> | undefined>(maxWorkers);
-  // 枠が全部埋まっていたら空くまで待つための関数
-  const race = () =>
-    Promise
-      // どれか1つでも完了/エラーで終了するまで待つ
-      .race(tasks)
-      // エラーで終了の場合でも握りつぶす
-      .catch(grasp);
-  // 一つ前のタスクでの検索
-  let racing: Promise<unknown> = Promise.resolve();
+  const slots = makeSlots(maxWorkers);
+  // 空き枠の検索結果を保持するPromise
+  let nextIndex = Promise.resolve(NaN);
   return async (task, ...args) => {
-    let found;
-    // 空いている枠の検索
-    while ((found = tasks.findIndex(vacancy)) === -1) {
-      // 一つ前のタスクでの検索が終わってから、このタスクでの検索を開始する
-      racing = racing.then(race);
-      await racing;
-    }
-    try {
-      // タスクを開始
-      const promise = task(...args);
-      // タスクを開始したので枠をこのタスクで埋めておく
-      tasks[found] = promise;
-      // 完了まで待ってから返値を返す
-      return await promise;
-    } finally {
-      // タスクが完了したら枠を空ける
-      delete tasks[found];
-    }
+    // 一つ前のタスクでの検索が終わってから、このタスクでの検索を開始する
+    nextIndex = nextIndex.then(() => Promise.race(slots));
+    // 空き枠の検索
+    const index = await nextIndex;
+    // タスクを開始
+    const promise = task(...args);
+    // このtaskが完了したらindexを返すPromiseに差し替える
+    slots[index] = Promise.resolve(promise)
+      .catch(squash)
+      .then(resultIndex(index));
+    // taskの返値をそのまま返す
+    return promise;
   };
 }
