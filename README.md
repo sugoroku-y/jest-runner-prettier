@@ -130,13 +130,13 @@ You can customize the behavior and display of Prettier by placing the following 
 
 ```js
 export default {
-    config: '.example',
-    ignorePath: '.prettier-ignore',
-    diff: {
-        expand: true,
-        contextLines: 4,
-        thresholdForOmitting: 50,
-    },
+  config: '.example',
+  ignorePath: '.prettier-ignore',
+  diff: {
+    expand: true,
+    contextLines: 4,
+    thresholdForOmitting: 50,
+  },
 };
 ```
 
@@ -144,21 +144,55 @@ The contents of each configuration item are as follows:
 
 > 各設定項目の内容は以下のとおりです。
 
-- `config`.
+- `config`
 
   Specifies the file name of the `.prettierrc` configuration file.
 
-  Specify a string.
+  Specify a string or `null`.
 
-  If omitted, the behavior is the same as if you did not specify a configuration file name in Prettier.
+  If set `null`, Prettier configuration file will not be searched.
+
+  If omitted, the default Prettier configuration file, such as `.prettierrc`, is retrieved and used.
 
   > Prettierの設定ファイル`.prettierrc`のファイル名を指定します。
   >
-  > 文字列を指定します。
+  > 文字列もしくは`null`を指定します。
   >
-  > 省略した場合はPrettierで設定ファイル名を指定しなかったときと同じ挙動になります。
+  > `null`に設定すると、Prettierの設定ファイルを検索しません。
+  >
+  > 省略した場合は、`.prettierrc`のようなデフォルトのPrettier設定ファイルを検索して使用します。
 
-- `ignorePath`.
+- `useCache`
+
+  If set to false, all caching will be bypassed.
+
+  Specify `true` or `false`.
+
+  If omitted, `false` (do not use cache) is assumed to be specified.
+
+  > `false`に設定すると、すべてのキャッシュがバイパスされます。
+  >
+  > `true`または`false`を指定します。
+  >
+  > 省略した場合は`false`(キャッシュを使用しない)が指定されたものと見なします。
+
+- `editorconfig`
+
+  If set to `true` and an `.editorconfig` file is in your project,
+  Prettier will parse it and convert its properties to the corresponding prettier configuration.
+
+  Specify `true` or `false`.
+
+  If omitted, `true` (convert `.editorconfig` if it exists) is assumed to be specified.
+
+  > もし`true`に設定されていて、`.editorconfig`ファイルがプロジェクトにあれば、
+  > Prettier はそれを解析し、そのプロパティを対応する prettier の設定に変換します。
+  >
+  > `true`または`false`を指定します。
+  >
+  > 省略した場合は`true`(`.editorconfig`があれば変換する)が指定されたものと見なします。
+
+- `ignorePath`
 
   The name of a file that specifies a file that is not covered by Prettier.
 
@@ -172,27 +206,41 @@ The contents of each configuration item are as follows:
   >
   > 省略した場合は`['.gitignore', '.prettierignore']`が指定されたものと見なします。
 
-- `diff.expand`.
+- `withNodeModules`
+
+  If set `true`, Prettier will not ignore files located in `node_modules` directory.
+
+  Specify `true` or `false`.
+
+  If omitted, `false`(ignore files located in `node_modules` directory) is assumed to be specified.
+
+  > もし`true`に設定されていれば、Prettierは`node_modules`ディレクトリにあるファイルを無視しません。
+  >
+  > `true`または`false`を指定します。
+  >
+  > 省略した場合は`false`(`node_modules`ディレクトリにあるファイルを無視する)が指定されたものと見なします。
+
+- `diff.expand`
 
   Specifies whether or not to expand lines with no differences when displaying the contents of unformatted files.
 
   Specify `true` or `false`.
 
-  If omitted, `false` (do not expand non-diff lines) is assumed.
+  If omitted, `false` (do not expand non-diff lines) is assumed to be specified.
 
   > フォーマットされていないファイルの内容を表示する際に、差分のない行も展開して表示するかどうかを指定します。
   >
   > `true`または`false`を指定します。
   >
-  > 省略した場合は`false`(差分のない行は展開しない)が指定されたものと見なします。
+  > 省略した場合は`false`(差分のない行を省略する)が指定されたものと見なします。
 
-- `diff.contextLines`.
+- `diff.contextLines`
 
   Specifies how many lines before and after the diff line to display when the contents of an unformatted file are not expanded.
 
   Specified as an integer number.
 
-  If omitted, `2` is assumed.
+  If omitted, `2` is assumed to be specified.
 
   > フォーマットされていないファイルの内容を展開しないで表示する際に、差分のある行の前後を何行表示するかを指定します。
   >
@@ -200,7 +248,7 @@ The contents of each configuration item are as follows:
   >
   > 省略した場合は`2`が指定されたものと見なします。
 
-- `diff.thresholdForOmitting`.
+- `diff.thresholdForOmitting`
 
   Specifies the number of lines to omit when displaying the contents of an unformatted file if there are too many lines to display.
 

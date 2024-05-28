@@ -15,13 +15,19 @@ export async function runPrettierTest(
 ): Promise<TestResult> {
   const {
     config,
+    useCache,
+    editorconfig,
     diff: { thresholdForOmitting },
   } = runnerConfig;
   const threshold =
     typeof thresholdForOmitting === 'number' ? thresholdForOmitting : Infinity;
   const contents = await readFile(testPath, 'utf8');
 
-  const prettierConfig = (await resolveConfig(testPath, { config })) ?? {};
+  const prettierConfig =
+    // nullが指定されていたときは検索しないで標準設定
+    (config !== null &&
+      (await resolveConfig(testPath, { config, useCache, editorconfig }))) ||
+    {};
   prettierConfig.filepath = testPath;
 
   const factory = new TestResultFactory(testPath, rootDir);
