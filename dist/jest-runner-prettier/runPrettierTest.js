@@ -5,14 +5,27 @@ import { resolveConfig, check, format } from 'prettier';
 import { optional } from '../utils/optional.js';
 import { safeAccess } from '../utils/safeAccess.js';
 import { TestResultFactory } from './TestResultFactory.js';
+/**
+ * Prettierのテストを実行します。
+ * @param testPath テスト対象のファイル
+ * @param rootDir プロジェクトのルート
+ * @param runnerConfig カスタマイズ項目
+ * @returns テスト結果
+ */
 export async function runPrettierTest(testPath, rootDir, runnerConfig) {
     const { config, useCache, editorconfig, diff: { thresholdForOmitting }, } = runnerConfig;
-    const threshold = typeof thresholdForOmitting === 'number' ? thresholdForOmitting : Infinity;
+    const threshold = typeof thresholdForOmitting === 'number'
+        ? thresholdForOmitting
+        : Infinity;
     const contents = await readFile(testPath, 'utf8');
     const prettierConfig = 
     // nullが指定されていたときは検索しないで標準設定
     (config !== null &&
-        (await resolveConfig(testPath, { config, useCache, editorconfig }))) ||
+        (await resolveConfig(testPath, {
+            config,
+            useCache,
+            editorconfig,
+        }))) ||
         {};
     prettierConfig.filepath = testPath;
     const factory = new TestResultFactory(testPath, rootDir);
@@ -81,7 +94,7 @@ function* classifyToModifiedBlock(context, text, lineNo, op) {
     }
     context.current.endLineNo = lineNo;
 }
-export function* classifyToBlocks(a, b) {
+function* classifyToBlocks(a, b) {
     const aa = a.split('\n');
     const bb = b.split('\n');
     const context = {};

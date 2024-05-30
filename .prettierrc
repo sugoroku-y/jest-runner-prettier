@@ -1,20 +1,18 @@
 {
-  "bracketSameLine": true,
-  "bracketSpacing": true,
-  "endOfLine": "lf",
-  "quoteProps": "as-needed",
-  "printWidth": 80,
-  "semi": true,
-  "singleQuote": true,
-  "tabWidth": 2,
-  "useTabs": false,
-  "trailingComma": "all",
-  "overrides": [
-    {
-      "files": [".eslintrc"],
-      "options": {
-        "trailingComma": "none"
-      }
-    }
-  ]
+    "singleQuote": true,
+    "tabWidth": 4,
+    "overrides": [
+        {
+            "files": [".eslintrc", ".prettierrc"],
+            "options": {
+                "trailingComma": "none"
+            }
+        },
+        {
+            "files": ["*.md"],
+            "options": {
+                "tabWidth": 2
+            }
+        }
+    ]
 }

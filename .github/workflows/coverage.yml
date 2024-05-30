@@ -1,29 +1,29 @@
 name: Push Coverage to Coveralls
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - src/**
-      - tests/**
-  pull_request:
-    types:
-      - opened
-    branches:
-      - master
-    paths:
-      - src/**
-      - tests/**
+    push:
+        branches:
+            - master
+        paths:
+            - src/**
+            - tests/**
+    pull_request:
+        types:
+            - opened
+        branches:
+            - master
+        paths:
+            - src/**
+            - tests/**
 jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20.x
-      - run: npm ci
-      - run: npm test --coverage
-      - name: Coveralls
-        uses: coverallsapp/github-action@v2
+    build:
+        name: Build
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20.x
+            - run: npm ci
+            - run: npm test --coverage
+            - name: Coveralls
+              uses: coverallsapp/github-action@v2

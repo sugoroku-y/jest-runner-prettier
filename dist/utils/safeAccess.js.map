@@ -1,1 +1,1 @@
-{"version":3,"file":"safeAccess.js","sourceRoot":"","sources":["../../src/utils/safeAccess.ts"],"names":[],"mappings":"AAAA,MAAM,UAAU,UAAU,CAIxB,CAAgB,EAChB,CAAI;IAEJ,OAAO,CAAC,IAAI,CAAC,IAAI,CAAC;QAChB,CAAC,CAAE,CAA4D,CAAC,CAAC,CAAC;QAClE,CAAC,CAAC,SAAS,CAAC;AAChB,CAAC"}
+{"version":3,"file":"safeAccess.js","sourceRoot":"","sources":["../../src/utils/safeAccess.ts"],"names":[],"mappings":"AAAA;;;;;;;GAOG;AACH,MAAM,UAAU,UAAU,CAItB,CAAgB,EAChB,CAAI;IAEJ,OAAO,CAAC,IAAI,CAAC,IAAI,CAAC;QACd,CAAC,CAAE,CAA4D,CAAC,CAAC,CAAC;QAClE,CAAC,CAAC,SAAS,CAAC;AACpB,CAAC"}

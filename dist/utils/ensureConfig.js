@@ -1,3 +1,9 @@
+/**
+ * 読み込んだ設定値にデフォルト値を適用します。
+ * @param loaded 読み込んだ設定値
+ * @param defaults デフォルト値
+ * @returns  読み込んだ設定値にデフォルト値を適用した値
+ */
 export function ensureConfig(loaded, defaults) {
     if (typeof defaults === 'function' ||
         defaults === null ||

@@ -1,6 +1,10 @@
 {
-  "editor.formatOnSave": false,
-  "jestrunner.debugOptions": {
-    "runtimeArgs": ["--experimental-vm-modules"]
-  }
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "jestrunner.debugOptions": {
+        "runtimeArgs": ["--experimental-vm-modules"]
+    },
+    "editor.formatOnSaveMode": "modificationsIfAvailable",
+    "editor.formatOnType": true
 }

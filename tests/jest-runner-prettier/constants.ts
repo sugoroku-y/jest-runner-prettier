@@ -2,9 +2,9 @@ import { resolve } from 'path';
 import type { RunnerConfig } from '../../src/jest-runner-prettier/loadRunnerConfig';
 
 export const DEFAULT_CONFIG = {
-  editorconfig: true,
-  ignorePath: ['.gitignore', '.prettierignore'],
-  diff: { expand: false, contextLines: 2, thresholdForOmitting: 20 },
+    editorconfig: true,
+    ignorePath: ['.gitignore', '.prettierignore'],
+    diff: { expand: false, contextLines: 2, thresholdForOmitting: 20 },
 } satisfies RunnerConfig;
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- ここではNullishにならない
 const SCRIPT_PATH = expect.getState().testPath!;

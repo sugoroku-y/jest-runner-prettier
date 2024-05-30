@@ -8,6 +8,11 @@ function resultIndex(index) {
 function makeSlots(max) {
     return Array.from({ length: max }, (_, i) => Promise.resolve(i));
 }
+/**
+ * 並列同時実行数を制限して非同期関数を実行します。
+ * @param maxWorkers 同時実行数の最大値を指定します。
+ * @returns 非同期関数を実行する関数を返します。
+ */
 export function pLimit(maxWorkers) {
     // 指定された数だけ枠を用意しておく
     const slots = makeSlots(maxWorkers);

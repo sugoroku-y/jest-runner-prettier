@@ -9,6 +9,11 @@ const DEFAULT_CONFIG = {
         thresholdForOmitting: 20,
     },
 };
+/**
+ * Prettier実行時のカスタマイズ項目を読み込みます。
+ * @param rootDir プロジェクトのルート
+ * @returns カスタマイズ項目
+ */
 export async function loadRunnerConfig(rootDir) {
     const cc = cosmiconfig('jest-runner-prettier');
     const result = await cc.search(rootDir);
