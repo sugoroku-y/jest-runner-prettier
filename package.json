@@ -1,6 +1,6 @@
 {
     "name": "@sugoroku-y/jest-runner-prettier",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "an alternative Prettier runner for Jest besides jest-runner-prettier",
     "type": "module",
     "main": "dist/index.js",
