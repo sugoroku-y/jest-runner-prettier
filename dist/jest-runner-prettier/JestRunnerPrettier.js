@@ -14,7 +14,13 @@ export class JestRunnerPrettier extends CallbackTestRunner {
                 ignorePath,
                 withNodeModules,
                 plugins,
-                resolveConfig: false,
+                // https://prettier.io/docs/en/api.html#prettiergetfileinfofileurlorpath--options には
+                // When setting options.resolveConfig (boolean, default true) to false, Prettier will not search for
+                // configuration file.This can be useful if this function is only used to check if file is ignored.
+                // > options.resolveConfig (boolean, default true) を false に設定すると、Prettier は設定ファイルを検索しません。
+                // > これは、この関数がファイルが無視されているかどうかをチェックするためだけに使われる場合に便利です。
+                // とあるが、設定ファイルのparserプロパティの指定により対象となることがあるのでfalseにはしない。
+                // resolveConfig: false,
             });
             if (info.inferredParser) {
                 await onStart(test);
