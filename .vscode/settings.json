@@ -6,5 +6,11 @@
         "runtimeArgs": ["--experimental-vm-modules"]
     },
     "editor.formatOnSaveMode": "modificationsIfAvailable",
-    "editor.formatOnType": true
+    "editor.formatOnType": true,
+    "files.insertFinalNewline": true,
+    "editor.tabSize": 4,
+    "files.autoSave": "onFocusChange",
+    "files.autoSaveWhenNoErrors": true,
+    "files.encoding": "utf8",
+    "files.eol": "\n"
 }

@@ -12,7 +12,7 @@ export default {
                     'ts-jest',
                     {
                         useESM: true,
-                        tsconfig: `<rootDir>/tests/tsconfig.json`,
+                        tsconfig: 'tests/tsconfig.json',
                     },
                 ],
             },
@@ -27,14 +27,7 @@ export default {
                   {
                       displayName: 'eslint',
                       runner: 'eslint',
-                      testMatch: [
-                          '<rootDir>/src/**/*.ts',
-                          '<rootDir>/tests/**/*.ts',
-                          '<rootDir>/tests/**/*.ts',
-                          '<rootDir>/*.js',
-                          '<rootDir>/*.mjs',
-                          '<rootDir>/*.cjs',
-                      ],
+                      testMatch: ['**/*.ts', '**/*.js', '**/*.mjs', '**/*.cjs'],
                   },
               ]
             : []),

@@ -3,8 +3,9 @@
     "tabWidth": 4,
     "overrides": [
         {
-            "files": [".eslintrc", ".prettierrc"],
+            "files": [".eslintrc", ".prettierrc", "*.jsonc"],
             "options": {
+                "parser": "json",
                 "trailingComma": "none"
             }
         },
