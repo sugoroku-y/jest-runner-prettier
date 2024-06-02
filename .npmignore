@@ -9,6 +9,7 @@
 /.prettier*
 /jest.*
 /jest-*
+!/jest-preset.js
 tsconfig*.json
 /tools/
 /.github/
