@@ -23,6 +23,7 @@
     },
     "dependencies": {
         "@jest/test-result": "^29.7.0",
+        "@sugoroku-y/p-limit": "github:sugoroku-y/p-limit",
         "chalk": "^5.3.0",
         "cosmiconfig": "^9.0.0",
         "ignore": "^5.3.1",
