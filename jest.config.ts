@@ -16,7 +16,6 @@ export default {
                     },
                 ],
             },
-            transformIgnorePatterns: ['/node_modules/(?!p-limit/)'],
             coveragePathIgnorePatterns: ['/node_modules/', '/tests/'],
         },
         ...(process.env['npm_config_lint'] === 'true' ||
