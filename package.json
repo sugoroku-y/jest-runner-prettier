@@ -1,6 +1,6 @@
 {
     "name": "@sugoroku-y/jest-runner-prettier",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "description": "an alternative Prettier runner for Jest besides jest-runner-prettier",
     "license": "MIT",
     "type": "module",
