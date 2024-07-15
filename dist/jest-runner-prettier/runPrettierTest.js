@@ -123,9 +123,9 @@ const expectedIndicator = expectedColor('=>');
 function head(lineNo, options) {
     return ` ${lineNo
         ? // suffixが指定されていれば左寄せ
-            optional(safeAccess(options, 'suffix'))?.((suffix) => `${lineNo}${suffix}`.padEnd(LINENO_WIDTH)) ??
+            (optional(safeAccess(options, 'suffix'))?.((suffix) => `${lineNo}${suffix}`.padEnd(LINENO_WIDTH)) ??
                 // prefixが指定されている、もしくはsuffix/prefix無しなら左寄せ
-                `${safeAccess(options, 'prefix') ?? ''}${lineNo}`.padStart(LINENO_WIDTH)
+                `${safeAccess(options, 'prefix') ?? ''}${lineNo}`.padStart(LINENO_WIDTH))
         : LINENO_SPACING} |`;
 }
 function* displayKeepBlock(block, context, contextLines) {
