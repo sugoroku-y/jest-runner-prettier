@@ -96,7 +96,7 @@ describe('runPrettierTest', () => {
         const mock = jest2
             .spyOn(
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access -- prettier内部関数のモック
-                (prettier as any).__internal.mockable,
+                (prettier as any).__debug.mockable.mocked,
                 'getPrettierConfigSearchStopDirectory',
             )
             .mockReturnValue(FAILURE_DIR);
